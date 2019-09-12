@@ -8,6 +8,11 @@ class Request {
 	/** @var $post array assoc */
 	protected $post;
 
+	public function __construct() {
+		$this->get = $_GET;
+		$this->post = $_POST;
+	}
+
 	public function get($name, $default = "") {
 		if (empty($this->get)) {
 			$this->get = $_GET;

@@ -2,7 +2,16 @@
 
 namespace controller;
 
+use lib\View;
+
 class Controller {
+
+	/** @var $view lib\View */
+	protected $view;
+
+	public function __construct() {
+		$this->view = new View();
+	}
 
 	public function success($msg, $data) {
 		echo json_encode([
@@ -29,6 +38,12 @@ class Controller {
 			'msg' => 'success',
 		], JSON_UNESCAPED_UNICODE);
 		exit(0);
+	}
+
+	public function __call($funcName, $args) {
+		printf("Method: [%s\\%s] does not exist!\n\n", get_called_class(), $funcName);
+		var_dump($args);
+		exit(2);
 	}
 
 }

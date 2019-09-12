@@ -9,7 +9,12 @@ use service\SmsProvider;
 class IndexController extends Controller {
 
 	public function __construct() {
-		header("Content-Type: application/json");
+		parent::__construct();
+	}
+
+	public function index() {
+		$this->view->assign("username", "mingzhanghui");
+		$this->view->render("index");
 	}
 
 	/**
@@ -22,6 +27,8 @@ class IndexController extends Controller {
 
 		$sms = new SmsProvider($userId, $password, $api);
 		$c = $sms->queryBalance();
+
+		header("Content-Type: application/json");
 		$this->success("获取余额成功", $c);
 	}
 }
