@@ -1,7 +1,7 @@
 <?php
 
 // 需要注册的php类路径 (相对于依赖库的目录, 这里库就在当前目录dirname(__FILE__))
-$prefixList = ['lib', 'controller', 'service'];
+$prefixList = ['lib', 'controller', 'service', 'models'];
 
 foreach ($prefixList as $prefix) {
 	spl_autoload_register(function ($clazz) use ($prefix) {

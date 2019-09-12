@@ -24,6 +24,9 @@ class Dispatcher {
 		});
 		$a = array_values($a);
 
+		if (!isset($a[0])) {
+			$a[0] = self::DEFAULT_ENTRANCE;
+		}
 		if (strncmp($a[0], self::DEFAULT_ENTRANCE, self::MAX_SCRIPT_LENGTH) === 0) {
 			array_shift($a);
 		}

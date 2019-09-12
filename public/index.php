@@ -6,6 +6,7 @@ ini_set("display_errors", 1);
 define('APP_ROOT', dirname(dirname(__FILE__)));
 
 include APP_ROOT . '/autoload.php';
+include APP_ROOT .'/config.php';
 
 use \lib\Dispatcher;
 
