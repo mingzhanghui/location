@@ -1,0 +1,5 @@
+.git/
+.idea/
+*.sublime-project
+*.sublime-workspace
+storage/logs/*
