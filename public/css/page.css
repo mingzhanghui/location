@@ -1,0 +1,38 @@
+.pagination {
+    padding: 10px 20px;
+    clear: both;
+}
+.page {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    display: block;
+}
+
+.page>li {
+    float: left;
+    cursor: pointer;
+}
+
+.page > li > a {
+    padding: 5px 10px;
+}
+
+.page .pageItem {
+    border: solid thin #DDDDDD;
+    margin: 5px;
+}
+
+.page .pageItemDisable {
+    border: solid thin #DDDDDD;
+    margin: 5px;
+    background-color: #DDDDDD;
+}
+
+.page .pageItemActive {
+    border: solid thin #0099FF;
+    margin: 5px;
+    background-color: #0099FF;
+    color: white;
+}
+

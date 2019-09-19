@@ -20,13 +20,52 @@ class Database extends \PDO {
      * @param $fetchMode int A PDO Fetch Mode
      * @return mixed
      */
-    public function select($sql, $array = array(), $fetchMode = \PDO::FETCH_ASSOC) {
+    public function query($sql, $array = array(), $fetchMode = \PDO::FETCH_ASSOC) {
         $sth= $this->prepare($sql);
         foreach ($array as $key => $value) {
             $sth->bindValue("{$key}", $value);
         }
         $sth->execute();
         return $sth->fetchAll($fetchMode);
+    }
+
+    /**
+     * @param $table string
+     * @param $where array [ ["name1","=","valuie1" ], ["name2", "like", "v%"] ]
+     * @param $fields array ["name1", "name2"]
+     * @param $order string "id desc"
+     * @param $limit string "0,10"
+     * @return array
+     */
+    public function select($table, $where, $fields, $order, $limit) {
+        if (empty($where)) {
+            $ws = "";
+        } else {
+            $wa = array_map(function($c) {
+                return sprintf("`%s` %s '%s'", $c[0], $c[1], $c[2]);
+            }, $where);
+            $ws = "WHERE " . implode(" AND ", $wa);
+        }
+        if (empty($fields)) {
+            $fs = "*";
+        } else {
+            $fs = "`".implode("`,`", $fields)."`";
+        }
+        if (empty($order)) {
+            $os = "";
+        } else {
+            $os = "ORDER BY ".$order;
+        }
+        if (empty($limit)) {
+            $ls = "";
+        } else {
+            $ls = "LIMIT ".$limit;
+        }
+        $sql = sprintf("SELECT %s FROM `%s` %s %s %s", $fs, $table, $ws, $os, $ls);
+        // echo $sql; die;
+        $sth = $this->prepare($sql);
+        $sth->execute();
+        return $sth->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**

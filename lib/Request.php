@@ -37,4 +37,20 @@ class Request {
 		}
 		return $data;
 	}
+
+    public function getClientIP() {
+        $realip = "";
+        if (isset($_SERVER)) {
+            foreach(['HTTP_X_FORWARED_FOR', 'HTTP_CLIENT_IP', 'REMOTE_ADDR'] as $name) {
+                if (isset($_SERVER[$name])) {
+                    $realip = $_SERVER[$name];
+                    break;
+                }
+            }
+        } else {
+            $realip = getenv('HTTP_X_FORWARDED_FOR') || getenv('HTTP_CLIENT_IP') || getenv('REMOTE_ADDR');
+        }
+        return $realip;
+    }
+
 }

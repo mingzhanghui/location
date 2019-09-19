@@ -1,13 +1,13 @@
 <?php
 // Always provide a TRAILING SLASH (/) AFTER A PATH
 
-define('URL', 'http://myaliyun.club:8042/');
+define('BASE_URL', 'http://127.0.0.1:8042/index.php');
 
 define('DB_TYPE', 'mysql');
-define('DB_HOST', '127.0.0.1');
+define('DB_HOST', '47.93.27.106');
 define('DB_NAME', 'location');
-define('DB_USER', 'root');
-define('DB_PASS', '0a5f44aae8cbdd04e72a588c9dbbca45');
+define('DB_USER', 'mingzhanghui');
+define('DB_PASS', 'Mzh123');
 
 define('SMS_USER_ID', "JA****");
 define('SMS_PASSWORD', "******");

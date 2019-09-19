@@ -11,7 +11,7 @@ class Curl
     public static function buildQuery(/* array */ $map) {
         $a = [];
         array_walk($map, function($value, $name) use (&$a) {
-            array_push($a, sprintf("%s=%s", urlencode($name), urlencode($value)));
+            array_push($a, sprintf("%s=%s", $name, urlencode($value)));
         });
         return implode('&', $a);
     }
@@ -84,9 +84,7 @@ class Curl
         // 提取http响应码
         // "HTTP/1.1 301 Moved Permanently"
         // "HTTP/1.1 200 OK"
-        $header1stLine = self::subStrByDelim($data);
-        $a = explode(' ', $header1stLine);
-        $statusCode = intval($a[1]);
+        $statusCode = self::getStatusCode($data);
         // 重定向 提取Http Header Location: xxx中的URL
         if (300 <= $statusCode && $statusCode < 400) {
             $hs = self::extractHttpHeader($data);
@@ -97,6 +95,12 @@ class Curl
             return "https://".$host;
         }
         return $url;
+    }
+
+    public static function getStatusCode($data) {
+        $header1stLine = self::subStrByDelim($data);
+        $a = explode(' ', $header1stLine);
+        return intval($a[1]);
     }
 
     private static function getHeaderAssoc($header) {
@@ -161,7 +165,7 @@ class Curl
         $data = curl_exec($ch);
         $errno = curl_errno($ch);
         if ($errno) {
-            throw new Exception("%s\n", curl_error($ch), $errno);
+            throw new \RuntimeException("%s\n", curl_error($ch), $errno);
         }
         curl_close($ch);
         return $data;

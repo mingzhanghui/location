@@ -8,7 +8,7 @@
 
 namespace lib;
 
-class Model {
+abstract class Model {
     /**
      * @var Database
      */
@@ -29,11 +29,19 @@ class Model {
      */
     protected $pk = "id";
 
-    function __construct() {
+    public function __construct() {
         if (is_null(self::$db)) {
             self::$db = new Database(DB_TYPE, DB_HOST,
                 DB_NAME, DB_USER, DB_PASS);
         }
+    }
+
+    public static function getDB() {
+        if (!self::$db) {
+            self::$db = new Database(DB_TYPE, DB_HOST,
+                DB_NAME, DB_USER, DB_PASS);
+        }
+        return self::$db;
     }
 
     public function __set($name, $value) {
@@ -47,4 +55,8 @@ class Model {
         return "";
         // throw new \RuntimeException("Attribute ".$name." does not exist.");
     }
+
+    abstract function save();
+
+    abstract function count($where = "");
 }

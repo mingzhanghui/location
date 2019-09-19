@@ -2,8 +2,10 @@
 
 namespace controller;
 
-use controller\Controller;
+use lib\Logger;
 use lib\Request;
+use lib\Str;
+use models\IpAccess;
 use models\Snapshot;
 use service\SmsProvider;
 
@@ -17,7 +19,23 @@ class IndexController extends Controller {
 	 * http://myaliyun.club:8042/Index/index?m=18771099612
 	 */
 	public function index(Request $request) {
-		$this->view->assign("username", "中本聪");
+        $mobile = $request->get("m");
+        $ip = $request->getClientIP();
+        if (!Str::isMobile($mobile)) {
+            // throw new \InvalidArgumentException();
+            $err = sprintf("手机号[%s]格式错误\n", $mobile);
+            $code = 22;
+            $this->fail($err, $code);
+            return $code;
+        }
+        // 记录ip访问
+        $ipAccess = new IpAccess();
+        $ipAccess->setIp($ip);
+        $ipAccess->setMobile($mobile);
+        $ipAccess->save();
+
+        // $data = MapService::queryGeoByIp("124.64.17.8");
+		$this->view->assign("ip", $ip);
 		$this->view->render("index");
 	}
 
@@ -33,14 +51,15 @@ class IndexController extends Controller {
         $pos->latitude = $request->get('latitude');
         $pos->created_at = date("Y-m-d H:i:s", time());
         $pos->save();
+        Logger::write($pos);
     }
 
 	/**
 	 * http://172.16.0.224:8042/index.php/Index/queryBalance?userId=JA1234&password=0123456
 	 */
 	public function queryBalance(Request $request) {
-		$userId = $request->get("userId");
-		$password = $request->get("password");
+		$userId = $request->get("userId", SMS_USER_ID);
+		$password = $request->get("password", SMS_PASSWORD);
 		if (!$userId || !$password) {
 			$this->fail("用户名密码不能为空", 2);
 			return;

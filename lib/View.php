@@ -5,8 +5,18 @@ namespace lib;
 class View {
 	protected $data = [];
 
+	/** @var string */
+	protected static $resSrc = "";
+
 	function __construct() {
 		// echo "this is the view<br />";
+        if (!isset(self::$resSrc[0])) {
+            self::$resSrc = Str::extractBeforeDelim(BASE_URL, "/index.php");
+        }
+	}
+
+	public function getResSrc() {
+	    return self::$resSrc;
 	}
 
 	public function assign($name, $value) {
@@ -20,8 +30,12 @@ class View {
 		return $this->data[$name];
 	}
 
-	public function render($name, $noInclude = false) {
-		if ($noInclude == true) {
+    /**
+     * @param $name string template relative path
+     * @param bool $include incluide header & footer ?
+     */
+	public function render($name, $include = true) {
+		if ($include == false) {
 			require_once APP_ROOT . '/views/' . $name . '.php';
 		} else {
 			require APP_ROOT . '/views/header.php';

@@ -11,3 +11,11 @@ CREATE TABLE `snapshot` (
   `created_at` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ip_access` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` char(15) NOT NULL COMMENT 'ip address xxx.xxx.xxx.xxx',
+  `mobile` char(11) DEFAULT NULL COMMENT 'mobile number',
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
